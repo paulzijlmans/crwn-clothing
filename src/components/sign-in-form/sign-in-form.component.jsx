@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 import FormInput from '../form-input/form-input.component';
@@ -18,12 +19,15 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
+  const navigate = useNavigate();
+
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
 
   const signInWithGoogle = async () => {
     await signInWithGooglePopup();
+    navigate('/');
   };
 
   const handleSubmit = async (event) => {
@@ -32,6 +36,7 @@ const SignInForm = () => {
     try {
       await signInWithUsernamePassword(email, password);
       resetFormFields();
+      navigate('/');
     } catch (error) {
       alert('incorrect login data');
       console.log('error during login');
