@@ -52,7 +52,6 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd, fie
   })
 
   await batch.commit();
-  console.log('done');
 }
 
 export const getCategoriesAndDocuments = async () => {
@@ -63,7 +62,7 @@ export const getCategoriesAndDocuments = async () => {
   return querySnapshot.docs.map(docSnapshot => docSnapshot.data());
 }
 
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
   if (!userAuth) return;
   const userDocRef = doc(db, 'users', userAuth.uid);
   const userSnapshot = await getDoc(userDocRef);
@@ -76,13 +75,14 @@ export const createUserDocumentFromAuth = async (userAuth) => {
       await setDoc(userDocRef, {
         displayName,
         email,
-        createdAt
+        createdAt,
+        ...additionalInformation,
       });
     } catch (error) {
       console.log('error creating the user', error.message);
     }
   }
-  return userDocRef;
+  return userSnapshot;
 }
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -98,3 +98,16 @@ export const signInWithUsernamePassword = async (email, password) => {
 export const signOutUser = async () => signOut(auth);
 
 export const onAuthStateChangedListener = async (callback) => onAuthStateChanged(auth, callback);
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
+};
