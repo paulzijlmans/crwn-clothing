@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 
-import Checkout from './components/checkout/checkout.component';
+import Checkout from './routes/checkout/checkout.component';
 import Authentication from './routes/authentication/authentication.component';
 import Home from './routes/home/home.component';
 import Navigation from './routes/navigation/navigation.component';
