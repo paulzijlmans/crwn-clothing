@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { useDispatch } from 'react-redux/es/exports';
+import { useDispatch } from 'react-redux';
 import { AuthError, AuthErrorCodes } from 'firebase/auth';
 
 import FormInput from '../form-input/form-input.component';
